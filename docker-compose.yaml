@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  client:
+    build: ./client
+    image: virgotex/yolo-client:v1.0.0
+    container_name: yolo-client
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - yolo-net
+
+  backend:
+    build: ./backend
+    image: virgotex/yolo-backend:v1.0.0
+    container_name: yolo-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/yolomy
+    depends_on:
+      - mongo
+    networks:
+      - yolo-net
+
+  mongo:
+    image: mongo:6
+    container_name: yolo-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - yolo-net
+
+volumes:
+  mongo-data:
+
+networks:
+  yolo-net:
+    driver: bridge

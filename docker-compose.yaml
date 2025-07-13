@@ -18,8 +18,8 @@ services:
     container_name: yolo-backend
     ports:
       - "5000:5000"
-    environment:
-      - MONGODB_URI=mongodb://mongo:27017/yolomy
+    env_file:
+      - .env
     depends_on:
       - mongo
     networks:

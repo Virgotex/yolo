@@ -36,7 +36,7 @@ docker compose up --build
 
 ## 📸 DockerHub Screenshot
 
-'screenshots/dockerhub.png'
+![DockerHub Images](screenshots/dockerhub.png)
 
 ## 🔐 Environment Variables
 

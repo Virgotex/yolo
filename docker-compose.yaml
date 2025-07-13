@@ -25,6 +25,19 @@ services:
     networks:
       - yolo-net
 
+  mongo:
+    image: mongo:6
+    container_name: yolo-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - yolo-net
+
+volumes:
+  mongo-data:
+
 networks:
   yolo-net:
     driver: bridge

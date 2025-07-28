@@ -11,10 +11,10 @@
 
 - name: Run frontend container
   docker_container:
+      - name: app-net
     name: yolo-client
     image: virgotex/yolo-client:v1.0.1
     restart_policy: unless-stopped
     ports:
       - "3000:80"
     networks:
-      - name: app-net

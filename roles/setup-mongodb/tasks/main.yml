@@ -3,6 +3,8 @@
   docker_container:
     name: app-mongo
     image: mongo
+    state: started
+    restart_policy: unless-stopped
     ports:
       - '27017:27017'
     volumes:

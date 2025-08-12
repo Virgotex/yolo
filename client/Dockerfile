@@ -9,10 +9,11 @@ COPY . .
 ENV NODE_OPTIONS=--openssl-legacy-provider
 RUN npm run build
 
-FROM nginx:alpine
+FROM nginx:1.25-alpine
 
 
 COPY --from=build /app/build /usr/share/nginx/html
+
 
 EXPOSE 80
 

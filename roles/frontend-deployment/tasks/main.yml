@@ -6,15 +6,15 @@
 - name: Pull YOLO frontend image
   docker_image:
     name: virgotex/yolo-client
-    tag: v1.0.1
+    tag: v1.0.2
     source: pull
 
 - name: Run frontend container
   docker_container:
-      - name: app-net
     name: yolo-client
-    image: virgotex/yolo-client:v1.0.1
+    image: virgotex/yolo-client:v1.0.2
     restart_policy: unless-stopped
     ports:
       - "3000:80"
     networks:
+      - name: app-net

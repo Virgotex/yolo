@@ -1,0 +1,64 @@
+---
+- name: Deploy YOLO app on AWS
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Install apt packages
+      apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+      loop:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - software-properties-common
+
+    - name: Add Docker GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker repository
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
+        state: present
+
+    - name: Install Docker
+      apt:
+        name: docker-ce
+        state: present
+        update_cache: yes
+
+    - name: Ensure Docker service is running
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Create Docker network
+      community.docker.docker_network:
+        name: yolo-network
+
+    - name: Run backend container
+      community.docker.docker_container:
+        name: yolo-backend
+        image: virgotex/yolo-backend:v1.0.0
+        state: started
+        restart_policy: always
+        networks:
+          - name: yolo-network
+        published_ports:
+          - "5000:5000"
+
+    - name: Run frontend container
+      community.docker.docker_container:
+        name: yolo-frontend
+        image: virgotex/yolo-frontend:v1.0.2
+        state: started
+        restart_policy: always
+        networks:
+          - name: yolo-network
+        published_ports:
+          - "3000:3000"
